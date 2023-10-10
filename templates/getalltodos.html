@@ -1,6 +1,5 @@
 {% extends 'bootstrap/base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
-
 {% block content %}
 {% include "header.html" %}
  <div class="container">
@@ -19,13 +18,16 @@
           <br>
           <br>
            {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+          <h1 style="color:blue;text-align:center">Present Todo List</h1>
 
        {% for post in all_posts %}
         <div class="post-preview">
 
            <p> <h2 class="post-title">
-              {{post.text}}
+            <span style="color:red">{{post.Date.split()[0]}} </span>{{post.text}}
+
             </h2>
+
             <a href="{{url_for('delete_post', post_id=post.id) }}">✅</a>
 
 
