@@ -1,5 +1,4 @@
 import os
-import openpyxl
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -273,21 +272,12 @@ def mail_sender():
             file_path3 = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             print(file_path3)
             file3.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        workbook = openpyxl.load_workbook(file_path1)
-
-        # Select a sheet
-        sheet = workbook.active  # Or workbook['SheetName']
         e_list = []
-
-        # Read data from a specific cell
-        cell_value = sheet['A1'].value
-        print(f"Value of A1: {cell_value}")
-
-        # Iterate through rows and print values
-        for row in sheet.iter_rows():
-            for cell in row:
-                e_list.append(cell.value)
-        e_list.pop(0)
+        with open('Now.csv', 'r') as file:
+            reader = csv.reader(file)
+            next(reader)  # Skip the header row if it exists
+            for row in reader:
+                e_list.append(row[0])  # Assuming email is in the first column
         print(e_list)
         e_list = [item for item in e_list if item is not None]
         print(e_list)
