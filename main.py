@@ -37,7 +37,9 @@ global posts, To_do_l
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 Bootstrap(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
+
+DATABASE_URL=postgresql://mail_oi9h_user:9REItMP4WUao3UdNp3rGHLw9Gpye19Wo@dpg-d2sm4kemcj7s73ab3h00-a.oregon-postgres.render.com/mail_oi9h
+app.config['SQLALCHEMY_DATABASE_URI'] = os.get.env("DATABASE_URL)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 db = SQLAlchemy(app)
 if not os.path.exists(UPLOAD_FOLDER):
