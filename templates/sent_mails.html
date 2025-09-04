@@ -1,0 +1,20 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+<br>
+<br>
+<ul>
+    {% for email in e_mails_sent %}
+        <li style="color:green;font-size:32;font-family: Arial; sans-serif;"> email sent to : {{ email }}</li>
+    {% endfor %}
+</ul>
+
+
+      </div>
+    </div>
+  </div>
+
+{% include "footer.html" %}
+{% endblock %}
