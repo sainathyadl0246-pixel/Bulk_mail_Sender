@@ -19,7 +19,7 @@ from wtforms import StringField, SelectField, SubmitField, PasswordField, EmailF
 from wtforms.validators import DataRequired, URL
 from werkzeug.security import generate_password_hash, check_password_hash
 import csv
-import pandas as pd
+
 from datetime import datetime
 import smtplib
 import time
