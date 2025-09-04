@@ -21,29 +21,13 @@ for row in sheet.iter_rows():
       e_list.append(cell.value)
 e_list.pop(0)
 print(e_list)
-e_list = [item for item in e_list if item is not None]
-print(e_list)
 names_list = [email.split('@')[0].split('.')[0] for email in e_list]
 print(names_list)
 names_list_title_case = [name.title() for name in names_list]
 print(names_list_title_case)
-# Create new lists to store the filtered values
-filtered_e_list = []
-filtered_names_list = []
-
-# Iterate through the lists using indices
-for i in range(len(e_list)):
-    if "@" in e_list[i]:
-        filtered_e_list.append(e_list[i])
-        filtered_names_list.append(names_list_title_case[i])
-
-# Update the original lists with the filtered values
-e_list = filtered_e_list
-names_list = filtered_names_list
-
-print("Filtered e_list:", e_list)
-print("Filtered names_list:", names_list)
-e_list_lower = [email.lower() for email in filtered_e_list]
+names_list_title_case = [name.title() for name in names_list]
+print(names_list_title_case)
+e_list_lower = [email.lower() for email in e_list]
 print(e_list_lower)
 import re
 
@@ -52,10 +36,8 @@ for name in names_list:
     # Remove numbers and symbols using regex
     cleaned_name = re.sub(r'[^a-zA-Z\s]', '', name)
     cleaned_names_list.append(cleaned_name)
-
 filtered_names_list = cleaned_names_list
 print(filtered_names_list)
-
 
 # Define your email address and password
 sender_email = "yadlapallis050@gmail.com"  # Replace with your email
@@ -66,7 +48,6 @@ smtp_server = "smtp.gmail.com"
 smtp_port = 587  # For TLS
 
 print("Email environment configured.")
-# Define the resume path and prepare the attachment
 resume_path = "uploads/Yadlapalli_Sainath_Senior_Data_Analyst_Resume.docx"
 
 # Open the file in read-binary mode
@@ -85,38 +66,38 @@ part.add_header(
     "Content-Disposition",
     f"attachment; filename= {resume_path}",
 )
+subject = "Resume for Data Analyst Position"
 
-
-# Read the email body from the text file
+# Connect to the SMTP server
 try:
-    with open("uploads/now.txt", "r") as email_file: # Assuming the email body is in a file named email_body.txt
-        email_body_template = email_file.read()
-except FileNotFoundError:
-    print("Error: 'email_body.txt' not found. Please upload the email body file.")
-    email_body_template = "Hello {name},\n\nPlease find my resume attached.\n\nSincerely,\nYour Name" # Default body if file not found
-
-
-# Iterate through the lists and send emails
-with smtplib.SMTP(smtp_server, smtp_port) as server:
+    server = smtplib.SMTP(smtp_server, smtp_port)
     server.starttls()  # Secure the connection
     server.login(sender_email, sender_password)
 
-    for recipient_email, name in zip(e_list_lower, filtered_names_list):
+    # Iterate through the lists and send emails
+    for recipient_email, recipient_name in zip(e_list_lower, filtered_names_list):
         # Create the email message
         msg = MIMEMultipart()
-        msg['From'] = sender_email
-        msg['To'] = recipient_email
-        msg['Subject'] = "Resume Application"  # Replace with your subject
+        msg["From"] = sender_email
+        msg["To"] = recipient_email
+        msg["Subject"] = "subject"
 
-        # Personalize the email body
-        email_body = email_body_template.format(name=name)
+        # Replace the placeholder in the body with the recipient's name
+        personalized_body = body = f"Hi {recipient_name},\n\nI hope this mail finds you well.\n\nPlease find attached my updated resume for your consideration for the Data Analyst position.\nWith [6 years] of experience in developing interactive dashboards, data visualization, SQL, and BI solutions.\nI am confident that my skills align well with the requirements of the role.\n\nI look forward to the opportunity to contribute my expertise and discuss how I can add value to your team.\n\nThanks & Regards,\nSainath.\nph.no :8309632859"
+        # Attach the body to the email
+        msg.attach(MIMEText(personalized_body, "plain"))
 
-        # Attach the body with the plain text format
-        msg.attach(MIMEText(email_body, 'plain'))
-
-        # Attach the resume
+        # Attach the resume file
         msg.attach(part)
 
         # Send the email
         server.sendmail(sender_email, recipient_email, msg.as_string())
         print(f"Email sent to {recipient_email}")
+
+except Exception as e:
+    print(f"Error: {e}")
+
+finally:
+    # Close the connection
+    if 'server' in locals() and server:
+        server.quit()

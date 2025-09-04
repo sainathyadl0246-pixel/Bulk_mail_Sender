@@ -39,11 +39,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{url_for('logout')}}"><span style="color:blue;size:32px;">LogOut</span></a>
-          <li class="nav-item">
-            <a class="nav-link" href="{{url_for('mail_sender')}}"><span style="color:blue;size:32px;">mail_sender</span></a>
-          <li class="nav-item">
-            <a class="nav-link" href="{{url_for('signup')}}"><span style="color:blue;size:32px;">Register</span></a>
-          </li>
            {% if logged_in %}
           <li class="nav-item">
            <span style="color:blue">{{current_user.email}}</span>
